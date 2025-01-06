@@ -1,2 +1,6 @@
+venv
+.git
+.env
+*.sqlite3
 
 .DS_Store
