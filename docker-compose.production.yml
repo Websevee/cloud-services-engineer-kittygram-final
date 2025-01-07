@@ -12,10 +12,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    build: .
-    command: >
-      sh -c "python manage.py migrate &&
-              python manage.py runserver 0.0.0.0:8000"
+    image: websevee/kittygram_backend:latest
     volumes:
       - static:/backend_static
       - media:/media
@@ -23,12 +20,12 @@ services:
       - postgres
 
   frontend:
-    build: ./frontend/
+    image: websevee/kittygram_frontend:latest
     volumes:
       - static:/app/build
 
   gateway:
-    build: .
+    image: websevee/kittygram_gateway:latest
     ports:
       - 80:80
     depends_on:
