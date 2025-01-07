@@ -170,8 +170,6 @@ jobs:
             echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> kittygram-app/.env
             echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> kittygram-app/.env
             echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> kittygram-app/.env
-            echo "DB_HOST=${{ secrets.DB_HOST }}" >> kittygram-app/.env
-            echo "DB_PORT=${{ secrets.DB_PORT }}" >> kittygram-app/.env
 
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
