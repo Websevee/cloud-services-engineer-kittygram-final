@@ -8,11 +8,13 @@ volumes:
 services:
   postgres:
     image: postgres:13.10
+    env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
 
   backend:
     image: websevee/kittygram_backend:latest
+    env_file: .env
     volumes:
       - static:/backend_static
       - media:/media
@@ -21,6 +23,7 @@ services:
 
   frontend:
     image: websevee/kittygram_frontend:latest
+    env_file: .env
     volumes:
       - static:/app/build
 
