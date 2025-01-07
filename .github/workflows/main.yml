@@ -154,7 +154,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "docker-compose.production.yml"
-          target: kittigram-app
+          target: "kittigram-app"
+          
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
