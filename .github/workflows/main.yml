@@ -185,6 +185,8 @@ jobs:
           # с которым установлено соединение:
           script: |
             cd kittygram-app
+            ls -la
+            ls -la ..
             # Выполняет pull образов с Docker Hub
             sudo docker compose -f docker-compose.production.yml stop
             sudo docker compose -f docker-compose.production.yml rm -f
