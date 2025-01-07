@@ -11,7 +11,7 @@ def _get_validated_link(
         deploy_file_info: tuple[Path, str],
         deploy_info_file_content: dict[str, str],
         link_key: str
-        ) -> str:
+) -> str:
     _, path_to_deploy_info_file = deploy_file_info
     assert link_key in deploy_info_file_content, (
         f'Убедитесь, что файл `{path_to_deploy_info_file}` содержит ключ '
@@ -32,6 +32,7 @@ def _get_validated_link(
         f'`{path_to_deploy_info_file}` содержит корректную ссылку.'
     )
     return link.rstrip('/')
+
 
 def _make_safe_request(link: str, stream: bool = False) -> requests.Response:
     try:
@@ -62,7 +63,7 @@ def test_link_connection(
         deploy_file_info: tuple[Path, str],
         deploy_info_file_content: dict[str, str],
         link_key: str
-        ) -> None:
+) -> None:
     link = _get_validated_link(deploy_file_info, deploy_info_file_content,
                                link_key)
     response = _make_safe_request(link)
@@ -75,6 +76,7 @@ def test_link_connection(
         assert cats_project_name in response.text, (
             assert_msg_template.format(project_name=cats_project_name)
         )
+
 
 def test_kittygram_static_is_available(
         deploy_file_info: tuple[Path, str],
