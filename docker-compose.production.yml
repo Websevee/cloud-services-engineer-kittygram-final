@@ -12,7 +12,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    build: ./backend/
+    build: .
     command: >
       sh -c "python manage.py migrate &&
               python manage.py runserver 0.0.0.0:8000"
@@ -28,7 +28,7 @@ services:
       - static:/app/build
 
   gateway:
-    build: ./nginx/
+    build: .
     ports:
       - 80:80
     depends_on:
