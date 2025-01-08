@@ -1,9 +1,5 @@
+version: "3.8"
 name: kittygram
-
-volumes:
-  static:
-  media:
-  pg_data:
 
 services:
   postgres:
@@ -16,10 +12,10 @@ services:
     image: websevee/kittygram_backend:latest
     env_file: .env
     ports: 
-      - "8000"
+      - "8000:8000"
     volumes:
       - static:/backend_static
-      - media:/media
+      - media:/backend/media
     depends_on:
       - postgres
 
@@ -40,3 +36,7 @@ services:
       - static:/static
       - media:/media
 
+volumes:
+  static:
+  media:
+  pg_data:
