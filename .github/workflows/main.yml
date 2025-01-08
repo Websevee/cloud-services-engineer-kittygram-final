@@ -212,7 +212,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov
+          pip install pytest@6.2.4 pytest-cov
 
       - name: Test with pytest
         env:
