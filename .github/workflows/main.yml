@@ -172,6 +172,8 @@ jobs:
             echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> kittygram-app/.env
             echo "DB_HOST=${{ secrets.DB_HOST }}" >> kittygram-app/.env
             echo "DB_PORT=${{ secrets.DB_PORT }}" >> kittygram-app/.env
+            echo "ALLOWED_HOSTS=${{ vars.ALLOWED_HOSTS }}" >> kittygram-app/.env
+            echo "DEBUG=${{ vars.DEBUG }}" >> kittygram-app/.env
 
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
@@ -229,4 +231,9 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: Деплой успешно выполнен!
+          message: |
+            Деплой успешно выполнен!
+            Ссылка на Action: ${{ github.action_path }}
+            Автор коммита: ${{ github.actor }} 
+            Сообщение коммита: ${{ github.event.commits[0].message }}
+            Ссылка на коммит: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
