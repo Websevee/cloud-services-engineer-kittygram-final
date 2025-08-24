@@ -67,14 +67,7 @@ jobs:
       id: tf-output-ip
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
-      run: |
-        echo "ip_address=$(terraform output -raw vm_1_address)" >> $GITHUB_OUTPUT
-      env:
-        ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
-        SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
-        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
-        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
+      run: echo "ip_address=$(terraform output -raw vm_1_address)" >> $GITHUB_OUTPUT
 
     - name: Terraform Destroy
       working-directory: ./infra
