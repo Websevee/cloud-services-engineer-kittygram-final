@@ -44,4 +44,19 @@ jobs:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
-	### Добавьте сюда стадии для apply и destroy
+### Добавьте сюда стадии для apply и destroy
+    - name: Terraform Apply
+      working-directory: ./infra
+      if: ${{ github.event.inputs.action == 'apply' }}
+      run: terraform apply -auto-approve
+      env:
+        ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+        SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+
+    - name: Terraform Destroy
+      working-directory: ./infra
+      if: ${{ github.event.inputs.action == 'destroy' }}
+      run: terraform destroy -auto-approve
+      env:
+        ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+        SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
