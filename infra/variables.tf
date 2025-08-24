@@ -28,11 +28,6 @@ variable "vm_1_name" {
   default = "vm-kittygram"
 }
 
-variable "aws_region" {
-  description = "AWS Region name"
-  type        = string
-}
-
 variable "ssh_key" {
   description = "SSH Public Key"
   type        = string
@@ -51,39 +46,47 @@ variable "folder_id" {
 variable "image_family" {
   description = "Image Family"
   type        = string
+  default     = "ubuntu-2404-lts"
 }
 
 variable "zone" {
   description = "Yandex VM zone"
   type        = string
+  default     = "ru-central1-a"
 }
 
 variable "platform_id" {
   description = "Platform ID"
   type        = string
+  default     = "standard-v3"
 }
 
 variable "cores" {
   description = "VM cores"
   type        = number
+  default     = 4
 }
 
 variable "memory" {
   description = "VM memory"
   type        = number
+  default     = 8
 }
 
 variable "disk_type" {
   description = "Disk type"
   type        = string
+  default     = "network-nvme"
 }
 
 variable "disk_size" {
   description = "Disk size"
   type        = number
+  default     = 50
 }
 
 variable "nat" {
   description = "NAT"
   type        = bool
+  default     = true
 }
