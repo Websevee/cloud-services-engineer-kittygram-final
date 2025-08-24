@@ -5,3 +5,11 @@ venv
 *.pyc
 
 .DS_Store
+
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+
+authorized_key.json
