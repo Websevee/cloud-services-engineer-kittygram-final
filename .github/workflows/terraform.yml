@@ -27,7 +27,11 @@ jobs:
     - name: Set up Yandex Cloud service account key
       working-directory: ./infra
       run: |
+        cat "Test 1"
+        ls -la
         echo "${{ secrets.YC_KEY_JSON }}" | base64 -d > ./authorized_key.json
+        cat "Test 2"
+        ls -la
 
     - name: Initialize Terraform
       working-directory: ./infra
