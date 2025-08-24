@@ -65,7 +65,7 @@ jobs:
 
     - name: Get IP Address
       run: |
-        echo "ip_address=$(terraform output vm_1_address)" >> $GITHUB_OUTPUT
+        echo "ip_address=$(terraform output -raw vm_1_address)" >> $GITHUB_OUTPUT
 
     - name: Terraform Destroy
       working-directory: ./infra
