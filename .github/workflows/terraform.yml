@@ -57,7 +57,7 @@ jobs:
       run: |
         terraform apply -auto-approve
 
-        IP_ADDRESS=$(terraform output vm_1_address )
+        IP_ADDRESS=$(terraform output -raw vm_1_address )
         echo "ip_address=$IP_ADDRESS" >> $GITHUB_OUTPUT
       env:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
