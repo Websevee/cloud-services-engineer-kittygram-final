@@ -82,11 +82,7 @@ jobs:
     
   deploy:
     needs: terraform
-    runs-on: ubuntu-latest
     if: ${{ needs.terraform.result == 'success' && github.event.inputs.action == 'apply' }}
-    
-    steps:
-    - name: Run Deploy Workflow
-      uses: ./.github/workflows/deploy.yml
-      with:
-        server_host: ${{ needs.terraform.outputs.ip_address }}
+    uses: ./.github/workflows/deploy.yml
+    with:
+      server_host: ${{ needs.terraform.outputs.ip_address }}
