@@ -35,6 +35,9 @@ jobs:
       env:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
+        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
 
     - name: Terraform Plan
       working-directory: ./infra
@@ -43,15 +46,27 @@ jobs:
       env:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
+        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
 
 ### Добавьте сюда стадии для apply и destroy
     - name: Terraform Apply
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
-      run: terraform apply -auto-approve
+      run: |
+        terraform apply -auto-approve
       env:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
+        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
+
+    - name: Set output IP Address
+      working-directory: ./infra
+      if: ${{ github.event.inputs.action == 'apply' }}
+      run: echo "ip_address=$(terraform output -raw vm_1_address 2>/dev/null | tr -d '\n')" >> $GITHUB_OUTPUT
 
     - name: Terraform Destroy
       working-directory: ./infra
@@ -60,3 +75,14 @@ jobs:
       env:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
+        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
+
+    
+  deploy:
+    needs: terraform
+    if: ${{ needs.terraform.result == 'success' && github.event.inputs.action == 'apply' }}
+    uses: ./.github/workflows/deploy.yml
+    with:
+      server_host: ${{ needs.terraform.outputs.ip_address }}
