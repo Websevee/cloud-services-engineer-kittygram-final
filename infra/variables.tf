@@ -52,3 +52,38 @@ variable "image_family" {
   description = "Image Family"
   type        = string
 }
+
+variable "zone" {
+  description = "Yandex VM zone"
+  type        = string
+}
+
+variable "platform_id" {
+  description = "Platform ID"
+  type        = string
+}
+
+variable "cores" {
+  description = "VM cores"
+  type        = number
+}
+
+variable "memory" {
+  description = "VM memory"
+  type        = number
+}
+
+variable "disk_type" {
+  description = "Disk type"
+  type        = string
+}
+
+variable "disk_size" {
+  description = "Disk size"
+  type        = number
+}
+
+variable "nat" {
+  description = "NAT"
+  type        = bool
+}
