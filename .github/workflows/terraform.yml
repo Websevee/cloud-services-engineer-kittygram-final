@@ -43,6 +43,9 @@ jobs:
       env:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
+        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
 
 ### Добавьте сюда стадии для apply и destroy
     - name: Terraform Apply
@@ -56,6 +59,9 @@ jobs:
       env:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
+        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
 
     - name: Terraform Destroy
       working-directory: ./infra
@@ -64,6 +70,9 @@ jobs:
       env:
         ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
+        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
 
     
   deploy:
