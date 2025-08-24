@@ -28,8 +28,6 @@ jobs:
       working-directory: ./infra
       run: |
         echo "${{ secrets.YC_KEY_JSON }}" | base64 -d > ./authorized_key.json
-        echo "Test 1"
-        cat ./authorized_key.json
 
     - name: Initialize Terraform
       working-directory: ./infra
