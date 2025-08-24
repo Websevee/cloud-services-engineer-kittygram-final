@@ -63,7 +63,8 @@ jobs:
         TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
         TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
 
-    - name: Get IP Address
+    - name: Set output IP Address
+      id: tf-output-ip
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
       run: |
