@@ -66,7 +66,10 @@ jobs:
     - name: Set output IP Address
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
-      run: echo "ip_address=$(terraform output -raw vm_1_address 2>/dev/null | tr -d '\n')" >> $GITHUB_OUTPUT
+      run: |
+        IP_ADDRESS=$(terraform output -raw vm_1_address 2>/dev/null)
+        echo "ip_address=$IP_ADDRESS" >> $GITHUB_OUTPUT
+        echo "ва $ip_address"
 
     - name: Terraform Destroy
       working-directory: ./infra

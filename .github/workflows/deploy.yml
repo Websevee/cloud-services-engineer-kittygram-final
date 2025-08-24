@@ -176,7 +176,7 @@ jobs:
           host: ${{ inputs.server_host }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          # passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "docker-compose.production.yml"
           target: "kittygram-app"
 
@@ -188,7 +188,7 @@ jobs:
           host: ${{ inputs.server_host }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          # passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > kittygram-app/.env
             echo "DB_ENGINE=${{ secrets.DB_ENGINE }}" >> kittygram-app/.env
@@ -207,7 +207,7 @@ jobs:
           host: ${{ inputs.server_host }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          # passphrase: ${{ secrets.SSH_PASSPHRASE }}
           # Параметр script передаёт в action appleboy/ssh-action команды,
           # которые нужно выполнить на сервере,
           # с которым установлено соединение:
