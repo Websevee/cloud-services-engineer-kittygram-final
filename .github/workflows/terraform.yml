@@ -70,7 +70,7 @@ jobs:
       working-directory: ./infra
       # if: ${{ github.event.inputs.action == 'apply' }}
       run: |
-        VM_1_ADDRESS=$(terraform output -raw vm_1_address)
+        VM_1_ADDRESS=$(terraform output vm_1_address)
         echo "vm_1_address=$VM_1_ADDRESS" >> "$GITHUB_OUTPUT"
       # echo "vm_1_address=$(terraform output -raw vm_1_address)" >> $GITHUB_OUTPUT
 
