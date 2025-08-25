@@ -22,6 +22,7 @@ on:
       SECRET_KEY:
       SERVER_HOST:
       SERVER_SSH_PRIVATE_KEY:
+      SERVER_SSH_PUBLIC_KEY:
       SERVER_USER:
       TELEGRAM_TO:
       TELEGRAM_TOKEN:
@@ -175,7 +176,7 @@ jobs:
           # host: ${{ secrets.SERVER_HOST }}
           host: ${{ inputs.server_host }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SERVER_SSH_PUBLIC_KEY }}
           # passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "docker-compose.production.yml"
           target: "kittygram-app"
@@ -187,7 +188,7 @@ jobs:
           # host: ${{ secrets.SERVER_HOST }}
           host: ${{ inputs.server_host }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SERVER_SSH_PUBLIC_KEY }}
           # passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > kittygram-app/.env
@@ -206,7 +207,7 @@ jobs:
           # host: ${{ secrets.SERVER_HOST }}
           host: ${{ inputs.server_host }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SERVER_SSH_PUBLIC_KEY }}
           # passphrase: ${{ secrets.SSH_PASSPHRASE }}
           # Параметр script передаёт в action appleboy/ssh-action команды,
           # которые нужно выполнить на сервере,
