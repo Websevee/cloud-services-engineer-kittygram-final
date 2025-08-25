@@ -24,6 +24,8 @@ jobs:
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
+      with:
+          terraform_wrapper: false
 
     - name: Set up Yandex Cloud service account key
       working-directory: ./infra
@@ -70,7 +72,7 @@ jobs:
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
       run: |
-        VM_1_ADDRESS=$(TF_LOG= terraform output -raw vm_1_address)
+        VM_1_ADDRESS=$(terraform output -raw vm_1_address)
         echo "test output: $VM_1_ADDRESS"
         echo "vm_1_address=$VM_1_ADDRESS" >> "$GITHUB_OUTPUT"
         
