@@ -33,5 +33,4 @@ write_files:
 
 runcmd:
   - sleep 10
-  - sudo -i
   - /root/vm_prep.sh
