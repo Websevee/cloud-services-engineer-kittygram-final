@@ -25,7 +25,8 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-          terraform_wrapper: false
+        terraform_version: 1.8.3
+        terraform_wrapper: false
 
     - name: Set up Yandex Cloud service account key
       working-directory: ./infra
@@ -71,12 +72,7 @@ jobs:
       shell: bash
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
-      run: |
-        VM_1_ADDRESS=$(terraform output -raw vm_1_address)
-        echo "test output: $VM_1_ADDRESS"
-        echo "vm_1_address=$VM_1_ADDRESS" >> "$GITHUB_OUTPUT"
-        
-        # echo "vm_1_address=$(TF_LOG = terraform output -raw vm_1_address)" >> $GITHUB_OUTPUT
+      run: echo "vm_1_address=$(terraform output -raw vm_1_address)" >> $GITHUB_OUTPUT
 
     - name: Terraform Destroy
       working-directory: ./infra
@@ -88,16 +84,6 @@ jobs:
         TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
         TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
         TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
-
-  debug:
-    runs-on: ubuntu-latest
-    needs: terraform
-
-    steps:
-    - name: "Test 100"
-      run: |
-        echo "Test 101: ${{ needs.terraform.outputs.vm_1_address }}"
-        echo "Test 201: ${{ needs.terraform.outputs }}"
     
   deploy:
     needs: terraform
@@ -118,6 +104,7 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
       SERVER_SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+      SERVER_SSH_PUBLIC_KEY: ${{ secrets.SERVER_SSH_PUBLIC_KEY }}
       SERVER_USER: ${{ secrets.SERVER_USER }}
       # SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
