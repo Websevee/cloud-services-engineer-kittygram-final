@@ -68,7 +68,7 @@ jobs:
     - name: Set output IP Address
       id: set-ip-address
       working-directory: ./infra
-      if: ${{ github.event.inputs.action == 'apply' }}
+      # if: ${{ github.event.inputs.action == 'apply' }}
       run: |
         echo "vm_1_address=$(terraform output -raw vm_1_address)" >> $GITHUB_OUTPUT
 
