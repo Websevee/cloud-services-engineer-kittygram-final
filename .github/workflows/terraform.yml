@@ -14,6 +14,7 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
     outputs:
       vm_1_address: ${{ steps.set-ip-address.outputs.vm_1_address }}
 
@@ -67,8 +68,9 @@ jobs:
 
     - name: Set output IP Address
       id: set-ip-address
+      shell: bash
       working-directory: ./infra
-      # if: ${{ github.event.inputs.action == 'apply' }}
+      if: ${{ github.event.inputs.action == 'apply' }}
       run: |
         VM_1_ADDRESS=$(terraform output -raw vm_1_address)
         echo "vm_1_address=$VM_1_ADDRESS" >> "$GITHUB_OUTPUT"
