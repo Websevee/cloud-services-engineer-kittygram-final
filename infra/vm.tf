@@ -28,7 +28,7 @@ resource "yandex_compute_instance" "vm_1" {
   network_interface {
     subnet_id          = yandex_vpc_subnet.infra_subnet[0].id
     nat                = var.nat
-    nat_ip_address     = "62.84.112.117"
+    nat_ip_address     = var.server_host
     security_group_ids = [yandex_vpc_security_group.infra_sg.id]
   }
 
