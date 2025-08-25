@@ -11,5 +11,6 @@ venv
 *.tfstate.*
 *.tfvars
 *.tfvars.json
+.terraform.lock.hcl
 
 authorized_key.json
