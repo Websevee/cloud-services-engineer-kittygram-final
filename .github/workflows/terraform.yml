@@ -25,12 +25,12 @@ jobs:
     - name: Generate terraform.tfvars
       run: |
         cat <<EOF > terraform.tfvars
-        access_key = "${secrets.S3_ACCESS_KEY}"
-        secret_key = "${secrets.S3_SECRET_KEY}"
-        ssh_key = "${secrets.SERVER_SSH_PUBLIC_KEY}"
-        cloud_id = "${secrets.YANDEX_CLOUD_ID}"
-        folder_id = "${secrets.YANDEX_FOLDER_ID}"
-        server_host = "${secrets.SERVER_HOST}"
+        access_key = "${S3_ACCESS_KEY}"
+        secret_key = "${S3_SECRET_KEY}"
+        ssh_key = "${SERVER_SSH_PUBLIC_KEY}"
+        cloud_id = "${YANDEX_CLOUD_ID}"
+        folder_id = "${YANDEX_FOLDER_ID}"
+        server_host = "${SERVER_HOST}"
         EOF
 
     - name: Setup Terraform
