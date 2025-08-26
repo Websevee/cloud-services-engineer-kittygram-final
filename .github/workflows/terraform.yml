@@ -26,10 +26,10 @@ jobs:
       working-directory: ./infra
       run: |
         cat <<EOF > terraform.tfvars
-        ssh_key = "${{ secrets.SERVER_SSH_PUBLIC_KEY }}"
         cloud_id = "${{ secrets.YANDEX_CLOUD_ID }}"
         folder_id = "${{ secrets.YANDEX_FOLDER_ID }}"
         server_host = "${{ secrets.SERVER_HOST }}"
+        ssh_key = "${{ secrets.SERVER_SSH_PUBLIC_KEY }}"
         EOF
 
     - name: Setup Terraform
