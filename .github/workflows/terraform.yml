@@ -25,8 +25,6 @@ jobs:
     - name: Generate terraform.tfvars
       run: |
         cat <<EOF > terraform.tfvars
-        access_key = "${{ secrets.S3_ACCESS_KEY }}"
-        secret_key = "${{ secrets.S3_SECRET_KEY }}"
         ssh_key = "${{ secrets.SERVER_SSH_PUBLIC_KEY }}"
         cloud_id = "${{ secrets.YANDEX_CLOUD_ID }}"
         folder_id = "${{ secrets.YANDEX_FOLDER_ID }}"
@@ -46,19 +44,27 @@ jobs:
 
     - name: Initialize Terraform
       working-directory: ./infra
-      run: terraform init
+      run: terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
+      env:
+          ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
     - name: Terraform Plan
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'plan' }}
       run: terraform plan
+      env:
+          ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
 ### Добавьте сюда стадии для apply и destroy
     - name: Terraform Apply
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
-      run: |
-        terraform apply -auto-approve
+      run: terraform apply -auto-approve
+      env:
+          ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
     - name: Set output IP Address
       id: set-ip-address
@@ -71,6 +77,9 @@ jobs:
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'destroy' }}
       run: terraform destroy -auto-approve
+      env:
+          ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
     
   deploy:
     needs: terraform
