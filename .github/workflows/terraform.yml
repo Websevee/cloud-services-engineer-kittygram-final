@@ -29,7 +29,9 @@ jobs:
         cloud_id = "${{ secrets.YANDEX_CLOUD_ID }}"
         folder_id = "${{ secrets.YANDEX_FOLDER_ID }}"
         server_host = "${{ secrets.SERVER_HOST }}"
-        ssh_key = "${{ secrets.SERVER_SSH_PUBLIC_KEY }}"
+        ssh_key = <<EOF0 
+        ${SERVER_SSH_PUBLIC_KEY} 
+        EOF0
         EOF
 
     - name: Setup Terraform
