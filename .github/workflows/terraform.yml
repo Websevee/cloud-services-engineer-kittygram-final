@@ -30,7 +30,7 @@ jobs:
         folder_id = "${{ secrets.YANDEX_FOLDER_ID }}"
         server_host = "${{ secrets.SERVER_HOST }}"
         ssh_key = <<SSH_KEY
-        ${SERVER_SSH_PUBLIC_KEY}
+        ${{ secrets.SERVER_SSH_PUBLIC_KEY }}
         SSH_KEY
         EOF
 
