@@ -90,3 +90,8 @@ variable "nat" {
   type        = bool
   default     = true
 }
+
+variable "server_host" {
+  description = "YC IP Address VM"
+  type        = string
+}

@@ -1,4 +1,4 @@
-name: Terraform Workflow
+name: Terraform
 on:
   workflow_dispatch:
     inputs:
@@ -15,14 +15,30 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    outputs:
+      vm_1_address: ${{ steps.set-ip-address.outputs.vm_1_address }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Generate terraform.tfvars
+      working-directory: ./infra
+      run: |
+        cat <<EOF > terraform.tfvars
+        cloud_id = "${{ secrets.YANDEX_CLOUD_ID }}"
+        folder_id = "${{ secrets.YANDEX_FOLDER_ID }}"
+        server_host = "${{ secrets.SERVER_HOST }}"
+        ssh_key = <<SSH_KEY
+        ${{ secrets.SERVER_SSH_PUBLIC_KEY }}
+        SSH_KEY
+        EOF
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.8.3
+        terraform_wrapper: false
 
     - name: Set up Yandex Cloud service account key
       working-directory: ./infra
@@ -33,56 +49,62 @@ jobs:
       working-directory: ./infra
       run: terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
       env:
-        ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
-        SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
-        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
-        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
+          ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
     - name: Terraform Plan
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'plan' }}
       run: terraform plan
       env:
-        ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
-        SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
-        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
-        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
+          ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
 ### Добавьте сюда стадии для apply и destroy
     - name: Terraform Apply
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
-      run: |
-        terraform apply -auto-approve
+      run: terraform apply -auto-approve
       env:
-        ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
-        SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
-        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
-        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
+          ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
     - name: Set output IP Address
+      id: set-ip-address
+      shell: bash
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'apply' }}
-      run: echo "ip_address=$(terraform output -raw vm_1_address 2>/dev/null | tr -d '\n')" >> $GITHUB_OUTPUT
+      run: echo "vm_1_address=$(terraform output -raw vm_1_address)" >> $GITHUB_OUTPUT
 
     - name: Terraform Destroy
       working-directory: ./infra
       if: ${{ github.event.inputs.action == 'destroy' }}
       run: terraform destroy -auto-approve
       env:
-        ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
-        SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
-        TF_VAR_ssh_key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        TF_VAR_cloud_id: ${{ secrets.YANDEX_CLOUD_ID }}
-        TF_VAR_folder_id: ${{ secrets.YANDEX_FOLDER_ID }}
-
+          ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
     
   deploy:
     needs: terraform
     if: ${{ needs.terraform.result == 'success' && github.event.inputs.action == 'apply' }}
     uses: ./.github/workflows/deploy.yml
     with:
-      server_host: ${{ needs.terraform.outputs.ip_address }}
+      server_host: ${{ needs.terraform.outputs.vm_1_address }}
+    secrets: 
+      DB_ENGINE: ${{ secrets.DB_ENGINE }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      # DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      SERVER_SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+      SERVER_SSH_PUBLIC_KEY: ${{ secrets.SERVER_SSH_PUBLIC_KEY }}
+      SERVER_USER: ${{ secrets.SERVER_USER }}
+      # SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
